@@ -1,0 +1,1 @@
+export type LocaleString = {[locale: string]: string};
