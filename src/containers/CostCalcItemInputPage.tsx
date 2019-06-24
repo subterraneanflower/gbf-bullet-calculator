@@ -99,6 +99,7 @@ export const CostCalcItemInputPage = withRouter(({history}) => {
         <div>
           <input
             type="number"
+            pattern="\d*"
             min="0"
             step="1"
             defaultValue={cost.item.slug in inventory ? inventoryQuantity.toString() : ''}
