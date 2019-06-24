@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { MemoryRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -55,6 +55,15 @@ export const App = () => {
   const [preferences, setPreferences] = useState<{[item: string]: any}>(initialPreferences);
   const [installPrompt, setInstallPrompt] = useState<any>();
 
+  const mainRef = useRef<HTMLElement>(null);
+
+  const scrollToTop = useCallback(() => {
+    const mainElem = mainRef.current;
+    if(mainElem) {
+      mainElem.scrollTo(0, 0);
+    }
+  }, [mainRef.current]);
+
   // PWA用の処理
   navigator.serviceWorker.register('serviceworker.js');
   addEventListener('beforeinstallprompt', (event) => {
@@ -102,11 +111,12 @@ export const App = () => {
         <MemoryRouter>
           <Route render={({location}) => {
             const isInputMode = location.pathname.startsWith('/calc/input');
+            scrollToTop();
 
             return (
               <>
                 <AppHeader actionButton={actionButton}/>
-                <main>
+                <main ref={mainRef}>
                   <TransitionGroup component={null}>
                     <CSSTransition key={'page-transition-' + location.pathname} classNames="page-transition" timeout={100}>
                       <Switch location={location}>
