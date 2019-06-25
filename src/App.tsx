@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { useCallback, useRef, useState } from 'react';
-import { MemoryRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { useCallback, useRef, useState, useEffect, useMemo } from 'react';
+import { createMemoryHistory } from 'history';
+import { Router, Redirect, Route, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import 'web-animations-js';
@@ -62,7 +63,14 @@ export const App = () => {
     if(mainElem) {
       mainElem.scrollTo(0, 0);
     }
-  }, [mainRef.current]);
+  }, [mainRef]);
+
+  const memoryHistory = useMemo(() => createMemoryHistory(), []);
+  
+  useEffect(() => {
+    const unlisten = memoryHistory.listen((location) => scrollToTop());
+    return () => unlisten();
+  }, [memoryHistory]);
 
   // PWA用の処理
   navigator.serviceWorker.register('serviceworker.js');
@@ -108,10 +116,9 @@ export const App = () => {
           setInstallPrompt
         }
       }>
-        <MemoryRouter>
+        <Router history={memoryHistory} >
           <Route render={({location}) => {
             const isInputMode = location.pathname.startsWith('/calc/input');
-            scrollToTop();
 
             return (
               <>
@@ -137,7 +144,7 @@ export const App = () => {
               </>
             );
           }}/>
-        </MemoryRouter>
+        </Router>
       </BulletCalculatorContext.Provider>
     </>
   );
