@@ -30,5 +30,6 @@ module.exports = {
     extensions: [
       '.ts', '.tsx', '.js', '.json'
     ],
-  }
+  },
+  performance: { hints: false }
 };
