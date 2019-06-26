@@ -35,6 +35,11 @@ export class GbfItem {
   }
 }
 
+export interface RequiredCostResult {
+  result: GbfItemCost[];
+  remainingExclusions: GbfItemCost[];
+}
+
 export class GbfItemCost {
   protected _item: GbfItem;
   protected _quantity: number;
@@ -52,8 +57,20 @@ export class GbfItemCost {
     return this._quantity;
   }
 
-  calcRequiredCosts(): GbfItemCost[] {
-    return [this];
+  sub(quantity: number): GbfItemCost {
+    const remains = Math.max(this.quantity - quantity, 0);
+    return new GbfItemCost(this.item, remains);
+  }
+
+  multiply(n: number): GbfItemCost {
+    return new GbfItemCost(this.item, this.quantity * n);
+  }
+
+  calcRequiredCosts(option: {exclusionCosts?: GbfItemCost[]} = {}): RequiredCostResult {
+    return {
+      result: [this],
+      remainingExclusions: option.exclusionCosts || []
+    };
   }
 }
 
@@ -91,29 +108,81 @@ export class Bullet extends GbfItem {
 
 export class BulletCost extends GbfItemCost {
   protected _bullet: Bullet;
-  protected _requiredItemsCache: GbfItemCost[] | null;
+  protected _requiredCostsCache: RequiredCostResult | null;
+  protected _exclusionCache: GbfItemCost[] | null;
 
   constructor(bullet: Bullet, quantity: number) {
     super(bullet, quantity);
     this._bullet = bullet;
-    this._requiredItemsCache = null;
+    this._requiredCostsCache = null;
+    this._exclusionCache = null;
   }
 
-  calcRequiredCosts(): GbfItemCost[] {
-    if(this._requiredItemsCache) {
-      return this._requiredItemsCache;
+  sub(quantity: number): BulletCost {
+    const remains = Math.max(this.quantity - quantity, 0);
+    return new BulletCost(this._bullet, remains);
+  }
+
+  multiply(n: number): BulletCost {
+    return new BulletCost(this._bullet, this.quantity * n);
+  }
+
+  calcRequiredCosts(option: {exclusionCosts?: GbfItemCost[]} = {}): RequiredCostResult {
+    const exclusions = [...(option.exclusionCosts || [])];
+
+    // キャッシュがあってバレット除外設定がキャッシュと同じであればそのまま返す。
+    if(this._requiredCostsCache && this._exclusionCache) {
+      const isSameLength = this._exclusionCache.length === exclusions.length;
+      const isSameElement = this._exclusionCache.every((ex) => exclusions.includes(ex));
+
+      if(isSameLength && isSameElement) {
+        return this._requiredCostsCache;
+      }
     }
 
     // 必要素材を計算する。
     // このときアイテムの順序をできる限り入れ替わらないようにしている。
 
+    // 所持バレットのコスト除外処理用。
+    // ここから所持バレットを消費（引き算、削除）していく。
+    const remainingExclusions = [...exclusions];
+
+    // コスト計算
     type costObj = {item: GbfItem, quantity: number};
     const costMap: Map<string, costObj> = new Map<string, costObj>();
     const costList = [];
 
     // 各アイテムを必要アイテムに分解する。
     // このときバレットはアイテムに分解されるが、アイテムはそのままになる。
-    const assemblies = this._bullet.requiredCosts.map((c) => c.calcRequiredCosts()).flat();
+    const assemblies = this._bullet.requiredCosts.map((c) => {
+      // 除外対象か確認
+      const exclusionIndex = remainingExclusions.findIndex((ex) => ex.item.slug === c.item.slug);
+
+      let exclusionNum = 0;
+      const isExcluded = exclusionIndex >= 0;
+
+      // 除外対象なら引き算して再計算。
+      // 除外リストから使用個数も引いておく。
+      if(isExcluded) {
+        const exclusionCost = remainingExclusions[exclusionIndex];
+        const exclusionRemains = exclusionCost.sub(c.quantity);
+
+        if (exclusionRemains.quantity > 0) {
+          remainingExclusions.splice(exclusionIndex, 1, exclusionRemains);
+        } else {
+          remainingExclusions.splice(exclusionIndex, 1);
+        }
+
+        exclusionNum = exclusionCost.quantity;
+      }
+
+      // コストにこのオブジェクトの個数を掛け算し、
+      // 除外分のバレットをを引き算する。
+      return c.multiply(this.quantity)
+        .sub(exclusionNum)
+        .calcRequiredCosts({exclusionCosts: remainingExclusions})
+        .result;
+    }).flat();
 
     // 分解したアイテムごとに個数をカウントする。
     // すでに存在する場合はそこに加算し、存在しない場合は新たに加える。
@@ -129,12 +198,18 @@ export class BulletCost extends GbfItemCost {
     }
 
     // 計算結果をGbfItemオブジェクトに戻す。
-    // 最終的な要求アイテムはバレットの個数分だけ乗算する。
-    const calcResult = costList.map((c) => new GbfItemCost(c.item, c.quantity * this._quantity));
+    const costResult = costList
+      .filter((c) => c.quantity > 0)
+      .map((c) => new GbfItemCost(c.item, c.quantity));
 
     // キャッシュする。
-    this._requiredItemsCache = calcResult;
+    const result = {
+      result: costResult,
+      remainingExclusions
+    };
 
-    return calcResult;
+    this._exclusionCache = exclusions;
+    this._requiredCostsCache = result;
+    return result;
   }
 }

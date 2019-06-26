@@ -45,8 +45,11 @@ const resetButtonStyle: React.CSSProperties = {
   backgroundColor: 'var(--danger-color)',
 };
 
+const viewSourceOnGitHubStyle: React.CSSProperties = {
+  textAlign: 'center'
+};
+
 const githubLinkStyle: React.CSSProperties = {
-  display: 'block',
   color: 'black',
   textAlign: 'center'
 };
@@ -58,6 +61,7 @@ export const PreferencesPage = () => {
     systemPreferences,
     setBulletCosts,
     setInventory,
+    setBulletInventory,
     setSystemPreferences
   } = useContext(BulletCalculatorContext);
 
@@ -77,6 +81,7 @@ export const PreferencesPage = () => {
     if(confirm('保存データを全て消去します。よろしいですか？')) {
       setBulletCosts([]);
       setInventory({});
+      setBulletInventory([]);
       setSystemPreferences({});
       alert('消去しました');
     }
@@ -107,7 +112,7 @@ export const PreferencesPage = () => {
         </CardButton>
       </Card>
 
-      <div>
+      <div style={viewSourceOnGitHubStyle}>
         <a
           href="https://github.com/subterraneanflower/gbf-bullet-calculator"
           target="_blank"

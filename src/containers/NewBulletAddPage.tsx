@@ -2,11 +2,16 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Card } from '../components/Card';
 import { CardButton } from '../components/CardButton';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { slugToBullet } from '../data/gbf_item_data';
 import { Counter } from '../components/Counter';
-import { BulletCalculatorContext } from '../context/bulletcalc_context';
 import { BulletCost } from '../data/gbf';
+
+interface NewBulletAddPageProps extends RouteComponentProps<{bulletslug: string}> {
+  basepath: string;
+  bulletCosts: BulletCost[];
+  onSave: (bulletCosts: BulletCost[]) => any;
+}
 
 const cardStyle: React.CSSProperties = {
   display: 'flex',
@@ -59,9 +64,8 @@ const costQuantityStyle: React.CSSProperties = {
   textAlign: 'right'
 };
 
-export const NewBulletAddPage = (props: RouteComponentProps<{bulletslug: string}>) => {
+export const NewBulletAddPage = (props: NewBulletAddPageProps) => {
   const [count, setCount] = useState(1);
-  const {bulletCosts, setBulletCosts} = useContext(BulletCalculatorContext);
 
   const bullet = slugToBullet[props.match.params.bulletslug];
   const coloredCardStyle = useMemo(() => ({...cardStyle, backgroundColor: bullet.cssColorString}), []);
@@ -71,9 +75,9 @@ export const NewBulletAddPage = (props: RouteComponentProps<{bulletslug: string}
   }, [setCount]);
 
   const addBulletAndBack = useCallback((event: AnimationPlaybackEvent) => {
-    setBulletCosts([...bulletCosts, new BulletCost(bullet, count)]);
-    props.history.replace('/');
-  }, [bulletCosts, setBulletCosts, count]);
+    props.onSave([...props.bulletCosts, new BulletCost(bullet, count)]);
+    props.history.replace(props.basepath);
+  }, [props.bulletCosts, props.onSave, count]);
 
   const requiredItemList = bullet.requiredCosts.map((cost) => {
     return (

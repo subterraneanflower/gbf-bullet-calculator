@@ -21,6 +21,11 @@ const bulletCardStyle: React.CSSProperties = {
   backgroundColor: 'rgb(38,171,82)'
 };
 
+const bulletInventoryCardStyle: React.CSSProperties = {
+  ...cardStyle,
+  backgroundColor: 'rgb(218,169,28)'
+};
+
 const progressCardStyle: React.CSSProperties = {
   ...cardStyle,
   backgroundColor: 'rgb(222,88,125)'
@@ -92,8 +97,11 @@ const emptyMessageStyle: React.CSSProperties = {
 };
 
 export const CostCalcPage = withRouter(({history}) => {
-  const {bulletCosts, inventory} = useContext(BulletCalculatorContext);
-  const totalCosts = totalBulletCosts(bulletCosts);
+  const {bulletCosts, inventory, bulletInventory} = useContext(BulletCalculatorContext);
+  const totalCosts = useMemo(
+    () => totalBulletCosts(bulletCosts, bulletInventory),
+    [bulletCosts, bulletInventory]
+  );
 
   const goToItemInput = useCallback((event: AnimationPlaybackEvent) => {
     history.push('/calc/input/item')
@@ -101,7 +109,17 @@ export const CostCalcPage = withRouter(({history}) => {
 
   const bulletList = bulletCosts.map((bullet, index) => {
     return (
-      <div key={bullet.item.slug + `-${index}`} style={costListItemStyle}>
+      <div key={'bullet-list-' + bullet.item.slug + `-${index}`} style={costListItemStyle}>
+        <img src={`img/${bullet.item.iconFileName || 'treasure.svg'}`} style={costIconStyle}/>
+        <div style={costNameStyle}>{bullet.item.name.ja}</div>
+        <div style={costQuantityStyle}>{bullet.quantity}個</div>
+      </div>
+    );
+  });
+
+  const bulletInventoryList = bulletInventory.map((bullet, index) => {
+    return (
+      <div key={'bullet-inventory-' + bullet.item.slug + `-${index}`} style={costListItemStyle}>
         <img src={`img/${bullet.item.iconFileName || 'treasure.svg'}`} style={costIconStyle}/>
         <div style={costNameStyle}>{bullet.item.name.ja}</div>
         <div style={costQuantityStyle}>{bullet.quantity}個</div>
@@ -111,7 +129,7 @@ export const CostCalcPage = withRouter(({history}) => {
 
   const requiredItemList = totalCosts.map((cost) => {
     const inventoryQuantity = cost.item.slug in inventory ? inventory[cost.item.slug] : 0;
-    const progress = inventoryQuantity / cost.quantity;
+    const progress = cost.quantity > 0 ? inventoryQuantity / cost.quantity : 0;
 
     return (
       <div key={cost.item.slug} style={costListItemContainerStyle}>
@@ -148,6 +166,16 @@ export const CostCalcPage = withRouter(({history}) => {
         <h2 style={cardTitleStyle}>作成バレット</h2>
         <div style={costListStyle}>
           {hasCosts ? bulletList : <div style={emptyMessageStyle}>バレットがありません</div>}
+        </div>
+      </Card>
+
+      <Card style={bulletInventoryCardStyle}>
+        <h2 style={cardTitleStyle}>素材バレット</h2>
+        <div style={costListStyle}>
+          {bulletInventoryList.length > 0 ?
+            bulletInventoryList :
+            <div style={emptyMessageStyle}>バレットがありません</div>
+          }
         </div>
       </Card>
 

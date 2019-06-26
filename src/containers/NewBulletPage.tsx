@@ -4,6 +4,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { bullet } from '../data/gbf_item_data';
 import { useCallback } from 'react';
 
+interface NewBulletPagePros extends RouteComponentProps<{bullettype: string}>{
+  basepath: string;
+}
+
 const buttonContainerStyle: React.CSSProperties = {
   display: 'flex',
   flexWrap: 'wrap',
@@ -18,30 +22,30 @@ const iconButtonStyle: React.CSSProperties = {
   height: '7em'
 };
 
-export const NewBulletPage = (props: RouteComponentProps<{bullettype: string}>) => {
+export const NewBulletPage = (props: NewBulletPagePros) => {
   const bulletType = props.match.params.bullettype;
 
   const goToParabellum = useCallback((event: AnimationPlaybackEvent) => {
-    props.history.push('/bulletlist/newbullet/parabellum', {backable: true});
+    props.history.push(`${props.basepath}/newbullet/parabellum`, {backable: true});
   }, [props.history]);
 
   const goToRifle = useCallback((event: AnimationPlaybackEvent) => {
-    props.history.push('/bulletlist/newbullet/rifle', {backable: true});
+    props.history.push(`${props.basepath}/newbullet/rifle`, {backable: true});
   }, [props.history]);
 
   const goToCartridge = useCallback((event: AnimationPlaybackEvent) => {
-    props.history.push('/bulletlist/newbullet/cartridge', {backable: true});
+    props.history.push(`${props.basepath}/newbullet/cartridge`, {backable: true});
   }, [props.history]);
 
   const goToAetherial = useCallback((event: AnimationPlaybackEvent) => {
-    props.history.push('/bulletlist/newbullet/aetherial', {backable: true});
+    props.history.push(`${props.basepath}/newbullet/aetherial`, {backable: true});
   }, [props.history]);
 
   if(bulletType) {
     const bulletList = bullet[bulletType] || [];
     const bulletButtons = bulletList.map((bullet) => {
       const goToNewBullet = (event: AnimationPlaybackEvent) => {
-        props.history.push(`/bulletlist/newbullet/${bulletType}/${bullet.slug}`, {backable: true});
+        props.history.push(`${props.basepath}/newbullet/${bulletType}/${bullet.slug}`, {backable: true});
       };
 
       return (

@@ -1,9 +1,21 @@
 import * as React from 'react';
 import { CardIconButton } from '../components/CardIconButton';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { useContext } from 'react';
-import { BulletCalculatorContext } from '../context/bulletcalc_context';
 import { CardButton } from '../components/CardButton';
+import { BulletCost } from '../data/gbf';
+
+interface BulletListPageProps extends RouteComponentProps {
+  title?: string;
+  basepath: string;
+  bulletCosts: BulletCost[]
+}
+
+const titleStyle: React.CSSProperties = {
+  color: 'rgb(60, 60, 60)',
+  fontWeight: 'normal',
+  fontSize: '1.3em',
+  textAlign: 'center'
+};
 
 const buttonStyle: React.CSSProperties = {
   color: 'white',
@@ -37,16 +49,16 @@ const addButtonStyle: React.CSSProperties = {
   backgroundColor: 'var(--positive-color)'
 };
 
-export const BulletListPage = withRouter((props: RouteComponentProps) => {
-  const {bulletCosts} = useContext(BulletCalculatorContext);
+export const BulletListPage = withRouter((props: BulletListPageProps) => {
+  const bulletCosts = props.bulletCosts;
 
   const goToNewBulletPage = (event: AnimationPlaybackEvent) => {
-    props.history.push('/bulletlist/newbullet', {backable: true});
+    props.history.push(`${props.basepath}/newbullet`, {backable: true});
   };
 
   const bulletList = bulletCosts.map((cost, index) => {
     const goToEditBulletPage = (event: AnimationPlaybackEvent) => {
-      props.history.push(`/bulletlist/edit/${index}`, {backable: true});
+      props.history.push(`${props.basepath}/edit/${index}`, {backable: true});
     };
 
     return (
@@ -64,6 +76,7 @@ export const BulletListPage = withRouter((props: RouteComponentProps) => {
 
   return (
     <div className="page" >
+      <h2 style={titleStyle}>{props.title}</h2>
       {bulletList}
       <CardIconButton
         iconUrl="img/plus-circle.svg"

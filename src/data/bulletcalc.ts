@@ -5,25 +5,32 @@ import { slugToBullet } from './gbf_item_data';
 export interface BulletCalculatorData {
   bulletCosts: BulletCost[];
   inventory: {[slug: string]: number};
+  bulletInventory: BulletCost[];
   actionButton?: React.ReactNode;
   installPrompt?: any;
   systemPreferences: {[item: string]: any};
   setBulletCosts: (newBullets: BulletCost[]) => any;
   setInventory: (newInventory: {[slug: string]: number}) => any;
+  setBulletInventory: (newBulletInventory: BulletCost[]) => any;
   setActionButton: (button: React.ReactNode | undefined) => any;
   setSystemPreferences: (pref: {[item: string]: any}) => any;
   setInstallPrompt: (prompt: any) => any;
 }
 
-export const totalBulletCosts = (bulletCostList: BulletCost[]): GbfItemCost[] => {
-  const calculatedCosts = bulletCostList.map((c) => c.calcRequiredCosts());
+export const totalBulletCosts = (bulletCostList: BulletCost[], exclusionBullets: GbfItemCost[] = []): GbfItemCost[] => {
+  let remainingExclusionBullets = [...exclusionBullets];
+  const calculatedCosts = bulletCostList.map((c) => {
+    const {result, remainingExclusions} = c.calcRequiredCosts({exclusionCosts: remainingExclusionBullets});
+    remainingExclusionBullets = remainingExclusions;
+    return result;
+  });
 
   type costObj = {item: GbfItem, quantity: number};
   const costMap: Map<string, costObj> = new Map<string, costObj>();
   const costList = [];
 
-  for(const requiredList of calculatedCosts) {
-    for(const assembly of requiredList) {
+  for(const result of calculatedCosts) {
+    for(const assembly of result) {
       const cost = costMap.get(assembly.item.slug);
       if(cost) {
         cost.quantity += assembly.quantity;

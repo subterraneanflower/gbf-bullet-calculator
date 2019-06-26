@@ -34,7 +34,15 @@ export const MobileNavBar = () => {
         activeStyle={activeLinkStyle}
         style={linkStyle}
       >
-        <MobileNavButton iconUrl="img/bullet.svg" label="バレット"/>
+        <MobileNavButton iconUrl="img/bullet.svg" label="作成"/>
+      </NavLink>
+
+      <NavLink
+        to="/bulletinventory"
+        activeStyle={activeLinkStyle}
+        style={linkStyle}
+      >
+        <MobileNavButton iconUrl="img/treasure.svg" label="素材"/>
       </NavLink>
 
       <NavLink

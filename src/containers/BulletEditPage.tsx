@@ -5,8 +5,12 @@ import { CardButton } from '../components/CardButton';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { slugToBullet } from '../data/gbf_item_data';
 import { Counter } from '../components/Counter';
-import { BulletCalculatorContext } from '../context/bulletcalc_context';
 import { BulletCost } from '../data/gbf';
+
+interface BulletEditPageProps extends RouteComponentProps<{bulletid: string}> {
+  bulletCosts: BulletCost[];
+  onSave: (bulletCosts: BulletCost[]) => any;
+}
 
 const cardStyle: React.CSSProperties = {
   display: 'flex',
@@ -70,10 +74,9 @@ const costQuantityStyle: React.CSSProperties = {
   textAlign: 'right'
 };
 
-export const BulletEditPage = (props: RouteComponentProps<{bulletid: string}>) => {
+export const BulletEditPage = (props: BulletEditPageProps) => {
   const bulletId = parseInt(props.match.params.bulletid);
-  const {bulletCosts, setBulletCosts} = useContext(BulletCalculatorContext);
-  const targetBulletCost = useMemo(() => bulletCosts[bulletId], [bulletId]);
+  const targetBulletCost = useMemo(() => props.bulletCosts[bulletId], [bulletId]);
   const bullet = slugToBullet[targetBulletCost.item.slug];
   const [count, setCount] = useState(targetBulletCost.quantity);
 
@@ -87,22 +90,22 @@ export const BulletEditPage = (props: RouteComponentProps<{bulletid: string}>) =
   }, [setCount]);
 
   const editBulletAndBack = useCallback((event: AnimationPlaybackEvent) => {
-    const newBulletCosts = [...bulletCosts];
+    const newBulletCosts = [...props.bulletCosts];
     newBulletCosts[bulletId] = new BulletCost(bullet, count);
-    setBulletCosts(newBulletCosts);
+    props.onSave(newBulletCosts);
     props.history.goBack();
-  }, [bulletCosts, setBulletCosts, count]);
+  }, [props.bulletCosts, props.onSave, count]);
 
   const deleteBulletAndBack = useCallback((event: AnimationPlaybackEvent) => {
     if(!confirm('このバレットを削除しますか？')) {
       return;
     }
 
-    const newBulletCosts = [...bulletCosts];
+    const newBulletCosts = [...props.bulletCosts];
     newBulletCosts.splice(bulletId, 1);
-    setBulletCosts(newBulletCosts);
+    props.onSave(newBulletCosts);
     props.history.goBack();
-  }, [bulletCosts, setBulletCosts]);
+  }, [props.bulletCosts, props.onSave]);
 
   const requiredItemList = bullet.requiredCosts.map((cost) => {
     return (
