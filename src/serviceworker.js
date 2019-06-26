@@ -1,4 +1,4 @@
-const CACHE_KEY = 'GbfBulletCalc-Cache-v2';
+const CACHE_KEY = 'GbfBulletCalc-Cache-v3';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();

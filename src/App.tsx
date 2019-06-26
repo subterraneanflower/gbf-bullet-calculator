@@ -73,11 +73,17 @@ export const App = () => {
   }, [memoryHistory]);
 
   // PWA用の処理
-  navigator.serviceWorker.register('serviceworker.js');
-  addEventListener('beforeinstallprompt', (event) => {
-    event.preventDefault();
-    setInstallPrompt(event);
-  });
+  useEffect(() => {
+    const onBeforeInstallPrompt = (event: any) => {
+      event.preventDefault();
+      setInstallPrompt(event);
+    };
+
+    addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+    navigator.serviceWorker.register('serviceworker.js');
+
+    return () => removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+  }, [setInstallPrompt]);
 
   const setNewBulletCosts = useCallback((newBulletCosts) => {
     setBulletCosts(newBulletCosts);
