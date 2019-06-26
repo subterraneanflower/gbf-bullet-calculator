@@ -18,25 +18,29 @@ export interface BulletCalculatorData {
 }
 
 export const totalBulletCosts = (bulletCostList: BulletCost[], exclusionBullets: GbfItemCost[] = []): GbfItemCost[] => {
+  // 素材バレットを消費しながら計算を進めていく。
   let remainingExclusionBullets = [...exclusionBullets];
+
   const calculatedCosts = bulletCostList.map((c) => {
     const {result, remainingExclusions} = c.calcRequiredCosts({exclusionCosts: remainingExclusionBullets});
-    remainingExclusionBullets = remainingExclusions;
+    remainingExclusionBullets = remainingExclusions; // 残りバレット
     return result;
   });
 
+  // バレットごとに素材がバラバラに出てくるので、
+  // 各素材をひとつにまとめる。
   type costObj = {item: GbfItem, quantity: number};
   const costMap: Map<string, costObj> = new Map<string, costObj>();
   const costList = [];
 
   for(const result of calculatedCosts) {
-    for(const assembly of result) {
-      const cost = costMap.get(assembly.item.slug);
+    for(const c of result) {
+      const cost = costMap.get(c.item.slug);
       if(cost) {
-        cost.quantity += assembly.quantity;
+        cost.quantity += c.quantity;
       } else {
-        const newCost = {item: assembly.item, quantity: assembly.quantity};
-        costMap.set(assembly.item.slug, newCost);
+        const newCost = {item: c.item, quantity: c.quantity};
+        costMap.set(c.item.slug, newCost);
         costList.push(newCost);
       }
     }

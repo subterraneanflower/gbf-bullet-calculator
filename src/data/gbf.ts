@@ -154,7 +154,7 @@ export class BulletCost extends GbfItemCost {
 
     // 各アイテムを必要アイテムに分解する。
     // このときバレットはアイテムに分解されるが、アイテムはそのままになる。
-    const assemblies = this._bullet.requiredCosts.map((c) => {
+    const atomics = this._bullet.requiredCosts.map((c) => {
       // 除外対象か確認
       const exclusionIndex = remainingExclusions.findIndex((ex) => ex.item.slug === c.item.slug);
 
@@ -177,7 +177,7 @@ export class BulletCost extends GbfItemCost {
       }
 
       // コストにこのオブジェクトの個数を掛け算し、
-      // 除外分のバレットをを引き算する。
+      // 除外分のバレットを引き算する。
       return c.multiply(this.quantity)
         .sub(exclusionNum)
         .calcRequiredCosts({exclusionCosts: remainingExclusions})
@@ -186,18 +186,18 @@ export class BulletCost extends GbfItemCost {
 
     // 分解したアイテムごとに個数をカウントする。
     // すでに存在する場合はそこに加算し、存在しない場合は新たに加える。
-    for(const assembly of assemblies) {
-      const cost = costMap.get(assembly.item.slug);
+    for(const a of atomics) {
+      const cost = costMap.get(a.item.slug);
       if(cost) {
-        cost.quantity += assembly.quantity;
+        cost.quantity += a.quantity;
       } else {
-        const newCost = {item: assembly.item, quantity: assembly.quantity};
-        costMap.set(assembly.item.slug, newCost);
+        const newCost = {item: a.item, quantity: a.quantity};
+        costMap.set(a.item.slug, newCost);
         costList.push(newCost);
       }
     }
 
-    // 計算結果をGbfItemオブジェクトに戻す。
+    // 計算結果をGbfItemCostオブジェクトに戻す。
     const costResult = costList
       .filter((c) => c.quantity > 0)
       .map((c) => new GbfItemCost(c.item, c.quantity));
