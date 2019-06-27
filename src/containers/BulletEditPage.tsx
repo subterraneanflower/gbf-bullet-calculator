@@ -2,8 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Card } from '../components/Card';
 import { CardButton } from '../components/CardButton';
-import { useCallback, useContext, useMemo, useState } from 'react';
-import { slugToBullet } from '../data/gbf_item_data';
+import { useCallback, useMemo, useState } from 'react';
 import { Counter } from '../components/Counter';
 import { BulletCost } from '../data/gbf';
 
@@ -82,7 +81,7 @@ export const BulletEditPage = (props: BulletEditPageProps) => {
   // バレットIDを用いて作成バレットリストからバレットを取得。
   // 削除した時に再レンダリングが走るとIDがずれてバグるのでuseMemoして固定しておく。
   const targetBulletCost = useMemo(() => props.bulletCosts[bulletId], [bulletId]);
-  const bullet = slugToBullet[targetBulletCost.item.slug];
+  const bullet = targetBulletCost.bullet;
 
   // バレットの個数。
   const [count, setCount] = useState(targetBulletCost.quantity);

@@ -90,9 +90,14 @@ export const CostCalcItemInputPage = withRouter(({history}) => {
       const inputElem = (event.target as HTMLInputElement);
 
       if(inputElem.value) {
-        // TODO: 数値以外が入力されている可能性を考慮する。
-        newInputInventory[cost.item.slug] = inputElem.valueAsNumber;
-        setInputInventory(newInputInventory);
+        // 数値以外が入力されているかもしれないので、
+        // とりあえずパースしてみてダメだったらログ出しておく。
+        try {
+          newInputInventory[cost.item.slug] = parseInt(inputElem.value);
+          setInputInventory(newInputInventory);
+        } catch(e) {
+          console.error('数値ではない無効な値が入力されています。');
+        }
       }
     };
 

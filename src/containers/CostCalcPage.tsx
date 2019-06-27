@@ -151,7 +151,7 @@ export const CostCalcPage = withRouter(({history}) => {
   });
 
   // 必要アイテムがひとつでもあるかどうか。
-  const hasCosts = bulletList.length > 0;
+  const hasCosts = bulletList.length > 0 && requiredItemList.length > 0;
 
   // 必要アイテムリストが長すぎるかどうか。
   // 10個を超えたら「長すぎる」扱いにする。

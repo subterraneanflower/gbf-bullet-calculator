@@ -67,7 +67,10 @@ export const PreferencesPage = () => {
 
   // インストールボタンをクリックした時のコールバック関数。
   const onClickInstall = useCallback((event: AnimationPlaybackEvent) => {
-    // TODO: installPromptの存在チェックする。
+    if(!installPrompt) {
+      return;
+    }
+
     installPrompt.prompt();
 
     installPrompt.userChoice.then((choiceResult: any) => {

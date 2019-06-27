@@ -118,6 +118,10 @@ export class BulletCost extends GbfItemCost {
     this._exclusionCache = null;
   }
 
+  get bullet(): Bullet {
+    return this._bullet;
+  }
+
   sub(quantity: number): BulletCost {
     const remains = Math.max(this.quantity - quantity, 0);
     return new BulletCost(this._bullet, remains);
@@ -133,11 +137,9 @@ export class BulletCost extends GbfItemCost {
     // キャッシュがあってバレット除外設定がキャッシュと同じであればそのまま返す。
     if(this._requiredCostsCache && this._exclusionCache) {
       const isSameLength = this._exclusionCache.length === exclusions.length;
+      const isSameList = isSameLength && this._exclusionCache.every((ex, index) => ex === exclusions[index]);
 
-      // TODO: ここの処理厳密にする。
-      const isSameElement = this._exclusionCache.every((ex) => exclusions.includes(ex));
-
-      if(isSameLength && isSameElement) {
+      if(isSameList) {
         return this._requiredCostsCache;
       }
     }
