@@ -70,15 +70,18 @@ export const NewBulletAddPage = (props: NewBulletAddPageProps) => {
   const bullet = slugToBullet[props.match.params.bulletslug];
   const coloredCardStyle = useMemo(() => ({...cardStyle, backgroundColor: bullet.cssColorString}), []);
 
+  // カウンターのカウント変更時のコールバック。
   const onCountChange = useCallback((newCount: number) => {
     setCount(newCount);
   }, [setCount]);
 
+  // バレットを一覧に追加して戻る用のコールバック。
   const addBulletAndBack = useCallback((event: AnimationPlaybackEvent) => {
     props.onSave([...props.bulletCosts, new BulletCost(bullet, count)]);
     props.history.replace(props.basepath);
   }, [props.bulletCosts, props.onSave, count]);
 
+  // 作成に必要なアイテムリスト。
   const requiredItemList = bullet.requiredCosts.map((cost) => {
     return (
       <div key={cost.item.slug} style={costListItemStyle}>

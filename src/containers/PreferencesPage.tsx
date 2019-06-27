@@ -65,7 +65,9 @@ export const PreferencesPage = () => {
     setSystemPreferences
   } = useContext(BulletCalculatorContext);
 
+  // インストールボタンをクリックした時のコールバック関数。
   const onClickInstall = useCallback((event: AnimationPlaybackEvent) => {
+    // TODO: installPromptの存在チェックする。
     installPrompt.prompt();
 
     installPrompt.userChoice.then((choiceResult: any) => {
@@ -77,6 +79,7 @@ export const PreferencesPage = () => {
     });
   }, [installPrompt, setInstallPrompt]);
 
+  // 全データ消去ボタンを押した時のコールバック関数。
   const onClickReset = useCallback(() => {
     if(confirm('保存データを全て消去します。よろしいですか？')) {
       setBulletCosts([]);

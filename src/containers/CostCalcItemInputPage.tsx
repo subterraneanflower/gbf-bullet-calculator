@@ -62,29 +62,35 @@ export const CostCalcItemInputPage = withRouter(({history}) => {
   const {bulletCosts, inventory, setActionButton, setInventory} = useContext(BulletCalculatorContext);
   const [inputInventory, setInputInventory] = useState(inventory);
 
+  // バレット作成に必要な全コスト。
   const totalCosts = totalBulletCosts(bulletCosts);
 
+  // 保存して戻る用のコールバック。
   const saveAndBack = useCallback((event: AnimationPlaybackEvent) => {
     setActionButton(undefined);
     setInventory(inputInventory);
     history.goBack();
   }, [history, inputInventory]);
 
+  // 保存ボタン。
   const saveButton = useMemo(() => (
     <CardButton style={saveButtonStyle} onAnimationFinish={saveAndBack}>保存</CardButton>
   ),[saveAndBack]);
 
+  // ページヘッダに保存ボタンを表示する。
   useEffect(() => {
     setActionButton(saveButton);
     return () => setActionButton(undefined);
   }, [saveButton, setActionButton]);
 
+  // 入力欄を備えた、必要アイテムリスト。
   const requiredItemList = totalCosts.map((cost) => {
     const updateInputInventory = (event: React.FormEvent<HTMLInputElement>) => {
       const newInputInventory = {...inputInventory};
       const inputElem = (event.target as HTMLInputElement);
 
       if(inputElem.value) {
+        // TODO: 数値以外が入力されている可能性を考慮する。
         newInputInventory[cost.item.slug] = inputElem.valueAsNumber;
         setInputInventory(newInputInventory);
       }

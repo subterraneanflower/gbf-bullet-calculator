@@ -25,6 +25,10 @@ const iconButtonStyle: React.CSSProperties = {
 export const NewBulletPage = (props: NewBulletPagePros) => {
   const bulletType = props.match.params.bullettype;
 
+  //
+  // 各ページへ遷移する用のコールバック関数。
+  // もう少し綺麗な方法ないかな……。
+  //
   const goToParabellum = useCallback((event: AnimationPlaybackEvent) => {
     props.history.push(`${props.basepath}/newbullet/parabellum`, {backable: true});
   }, [props.history]);
@@ -41,6 +45,7 @@ export const NewBulletPage = (props: NewBulletPagePros) => {
     props.history.push(`${props.basepath}/newbullet/aetherial`, {backable: true});
   }, [props.history]);
 
+  // 選択したバレットタイプに応じたバレット一覧。
   if(bulletType) {
     const bulletList = bullet[bulletType] || [];
     const bulletButtons = bulletList.map((bullet) => {

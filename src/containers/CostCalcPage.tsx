@@ -98,15 +98,20 @@ const emptyMessageStyle: React.CSSProperties = {
 
 export const CostCalcPage = withRouter(({history}) => {
   const {bulletCosts, inventory, bulletInventory} = useContext(BulletCalculatorContext);
+
+  // 全ての作成バレットの素材を合計して列挙する。
+  // 所持バレット分の素材は除外する。
   const totalCosts = useMemo(
     () => totalBulletCosts(bulletCosts, bulletInventory),
     [bulletCosts, bulletInventory]
   );
 
+  // アイテム所持数入力ページへ遷移するためのコールバック。
   const goToItemInput = useCallback((event: AnimationPlaybackEvent) => {
     history.push('/calc/input/item')
   }, [history]);
 
+  // 作成バレットリスト。
   const bulletList = bulletCosts.map((bullet, index) => {
     return (
       <div key={'bullet-list-' + bullet.item.slug + `-${index}`} style={costListItemStyle}>
@@ -117,6 +122,7 @@ export const CostCalcPage = withRouter(({history}) => {
     );
   });
 
+  // 所持バレットリスト。
   const bulletInventoryList = bulletInventory.map((bullet, index) => {
     return (
       <div key={'bullet-inventory-' + bullet.item.slug + `-${index}`} style={costListItemStyle}>
@@ -127,6 +133,7 @@ export const CostCalcPage = withRouter(({history}) => {
     );
   });
 
+  // 必要アイテムリスト。
   const requiredItemList = totalCosts.map((cost) => {
     const inventoryQuantity = cost.item.slug in inventory ? inventory[cost.item.slug] : 0;
     const progress = cost.quantity > 0 ? inventoryQuantity / cost.quantity : 0;
@@ -143,14 +150,20 @@ export const CostCalcPage = withRouter(({history}) => {
     );
   });
 
+  // 必要アイテムがひとつでもあるかどうか。
   const hasCosts = bulletList.length > 0;
+
+  // 必要アイテムリストが長すぎるかどうか。
+  // 10個を超えたら「長すぎる」扱いにする。
   const isTooLong = requiredItemList.length > 10;
 
-  const totalCost = useMemo(
+  // 全アイテムの合計個数。
+  const costSum = useMemo(
     () =>totalCosts.reduce((prev, current) => prev + current.quantity, 0),
     [bulletCosts, inventory]
   );
 
+  // 全所持アイテムの合計個数。
   const totalInventory = useMemo(
     () => totalCosts.reduce((prev, current) => (
       prev + (current.item.slug in inventory ? Math.min(inventory[current.item.slug], current.quantity) : 0)
@@ -158,7 +171,8 @@ export const CostCalcPage = withRouter(({history}) => {
     [bulletCosts, inventory]
   );
 
-  const progress = totalCost > 0 ? totalInventory/totalCost : 0;
+  // 全体の進捗（0.0から1.0）。
+  const progress = costSum > 0 ? totalInventory/costSum : 0;
 
   return (
     <div className="page">

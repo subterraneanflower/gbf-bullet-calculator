@@ -52,11 +52,14 @@ const addButtonStyle: React.CSSProperties = {
 export const BulletListPage = withRouter((props: BulletListPageProps) => {
   const bulletCosts = props.bulletCosts;
 
+  // バレット新規作成ページへの遷移用コールバック。
   const goToNewBulletPage = (event: AnimationPlaybackEvent) => {
     props.history.push(`${props.basepath}/newbullet`, {backable: true});
   };
 
+  // バレット一覧。
   const bulletList = bulletCosts.map((cost, index) => {
+    // バレットクリック時の編集ページへの遷移用コールバック。
     const goToEditBulletPage = (event: AnimationPlaybackEvent) => {
       props.history.push(`${props.basepath}/edit/${index}`, {backable: true});
     };

@@ -133,6 +133,8 @@ export class BulletCost extends GbfItemCost {
     // キャッシュがあってバレット除外設定がキャッシュと同じであればそのまま返す。
     if(this._requiredCostsCache && this._exclusionCache) {
       const isSameLength = this._exclusionCache.length === exclusions.length;
+
+      // TODO: ここの処理厳密にする。
       const isSameElement = this._exclusionCache.every((ex) => exclusions.includes(ex));
 
       if(isSameLength && isSameElement) {
@@ -154,7 +156,7 @@ export class BulletCost extends GbfItemCost {
 
     // 各アイテムを必要アイテムに分解する。
     // このときバレットはアイテムに分解されるが、アイテムはそのままになる。
-    const atomics = this._bullet.requiredCosts.map((c) => {
+    const itemCostList = this._bullet.requiredCosts.map((c) => {
       // 除外対象か確認
       const exclusionIndex = remainingExclusions.findIndex((ex) => ex.item.slug === c.item.slug);
 
@@ -186,13 +188,13 @@ export class BulletCost extends GbfItemCost {
 
     // 分解したアイテムごとに個数をカウントする。
     // すでに存在する場合はそこに加算し、存在しない場合は新たに加える。
-    for(const a of atomics) {
-      const cost = costMap.get(a.item.slug);
+    for(const icost of itemCostList) {
+      const cost = costMap.get(icost.item.slug);
       if(cost) {
-        cost.quantity += a.quantity;
+        cost.quantity += icost.quantity;
       } else {
-        const newCost = {item: a.item, quantity: a.quantity};
-        costMap.set(a.item.slug, newCost);
+        const newCost = {item: icost.item, quantity: icost.quantity};
+        costMap.set(icost.item.slug, newCost);
         costList.push(newCost);
       }
     }

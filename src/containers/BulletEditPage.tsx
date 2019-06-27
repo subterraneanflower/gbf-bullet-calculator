@@ -75,20 +75,30 @@ const costQuantityStyle: React.CSSProperties = {
 };
 
 export const BulletEditPage = (props: BulletEditPageProps) => {
+  // URLパラメータからバレットIDを取得する。
+  // バレットIDは作成バレットリストの中のインデックス値。
   const bulletId = parseInt(props.match.params.bulletid);
+
+  // バレットIDを用いて作成バレットリストからバレットを取得。
+  // 削除した時に再レンダリングが走るとIDがずれてバグるのでuseMemoして固定しておく。
   const targetBulletCost = useMemo(() => props.bulletCosts[bulletId], [bulletId]);
   const bullet = slugToBullet[targetBulletCost.item.slug];
+
+  // バレットの個数。
   const [count, setCount] = useState(targetBulletCost.quantity);
 
+  // バレット固有カラーでカードの背景色を決める。
   const coloredCardStyle = useMemo(() => ({
     ...cardStyle,
     backgroundColor: targetBulletCost.item.cssColorString
   }), []);
 
+  // カウンターの値変更時にステートの値も変化させるコールバック。
   const onCountChange = useCallback((newCount: number) => {
     setCount(newCount);
   }, [setCount]);
 
+  // 保存して戻るコールバック。
   const editBulletAndBack = useCallback((event: AnimationPlaybackEvent) => {
     const newBulletCosts = [...props.bulletCosts];
     newBulletCosts[bulletId] = new BulletCost(bullet, count);
@@ -96,6 +106,7 @@ export const BulletEditPage = (props: BulletEditPageProps) => {
     props.history.goBack();
   }, [props.bulletCosts, props.onSave, count]);
 
+  // バレット削除時のコールバック。
   const deleteBulletAndBack = useCallback((event: AnimationPlaybackEvent) => {
     if(!confirm('このバレットを削除しますか？')) {
       return;
@@ -107,6 +118,7 @@ export const BulletEditPage = (props: BulletEditPageProps) => {
     props.history.goBack();
   }, [props.bulletCosts, props.onSave]);
 
+  // バレット作成への必要アイテムリスト。
   const requiredItemList = bullet.requiredCosts.map((cost) => {
     return (
       <div key={cost.item.slug} style={costListItemStyle}>

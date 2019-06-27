@@ -41,10 +41,13 @@ const actionButtonContainerStyle: React.CSSProperties = {
 };
 
 export const AppHeader = withRouter((props: AppHeaderProps) => {
+  // 戻るボタンを押した時のコールバック関数。
   const onAnimationFinish = useCallback(() => {
     props.history.goBack();
   }, [props.history]);
 
+  // 戻るボタンを表示するか否か。
+  // locationのstateにユーザ定義情報としてboolean値backableが入っている。
   const backable = props.history.location.state && props.history.location.state.backable;
 
   return (
