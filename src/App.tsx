@@ -92,7 +92,10 @@ export const App = () => {
     };
 
     addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
-    navigator.serviceWorker.register('serviceworker.js');
+
+    if(navigator.serviceWorker) {
+      navigator.serviceWorker.register('serviceworker.js');
+    }
 
     return () => removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
   }, [setInstallPrompt]);
