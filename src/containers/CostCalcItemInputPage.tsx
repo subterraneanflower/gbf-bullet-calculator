@@ -92,11 +92,13 @@ export const CostCalcItemInputPage = withRouter(({history}) => {
       if(inputElem.value) {
         // 数値以外が入力されているかもしれないので、
         // とりあえずパースしてみてダメだったらログ出しておく。
-        try {
-          newInputInventory[cost.item.slug] = parseInt(inputElem.value);
-          setInputInventory(newInputInventory);
-        } catch(e) {
+        const parsedInputValue = parseInt(inputElem.value);
+
+        if(Number.isNaN(parsedInputValue)) {
           console.error('数値ではない無効な値が入力されています。');
+        } else {
+          newInputInventory[cost.item.slug] = parsedInputValue;
+          setInputInventory(newInputInventory);
         }
       }
     };
