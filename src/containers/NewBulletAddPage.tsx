@@ -99,7 +99,7 @@ export const NewBulletAddPage = (props: NewBulletAddPageProps) => {
           <img src={`img/${bullet.iconFileName || 'treasure.svg'}`}/>
           <div>{bullet.name.ja}</div>
         </div>
-        <Counter initialValue={count} min={1} max={99} unit="個" onCountChange={onCountChange}/>
+        <Counter initialValue={count} min={0} max={999} unit="個" onCountChange={onCountChange}/>
         <CardButton onAnimationFinish={addBulletAndBack} style={addBulletButtonStyle}>
           追加
         </CardButton>

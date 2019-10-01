@@ -136,7 +136,7 @@ export const BulletEditPage = (props: BulletEditPageProps) => {
           <div>{bullet.name.ja}</div>
         </div>
 
-        <Counter initialValue={count} min={1} max={99} unit="個" onCountChange={onCountChange}/>
+        <Counter initialValue={count} min={0} max={999} unit="個" onCountChange={onCountChange}/>
 
         <CardButton onAnimationFinish={editBulletAndBack} style={addBulletButtonStyle}>
           保存

@@ -39,12 +39,16 @@ const iconStyle: React.CSSProperties = {
   maxWidth: '100%'
 };
 
+const countContainerStyle: React.CSSProperties = {
+  margin: '0 0.7em'
+};
+
 const countStyle: React.CSSProperties = {
   fontSize: '1.3em',
-  color: 'white',
   width: '4em',
   textAlign: 'right',
-  padding: '0 0.8em'
+  padding: '0.3 0.5em',
+  margin: '0 0.5em'
 };
 
 export const Counter = (props: CounterProps) => {
@@ -67,12 +71,36 @@ export const Counter = (props: CounterProps) => {
     if(props.onCountChange) { props.onCountChange(newCount); }
   }, [count, props.onCountChange]);
 
+  const onInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const parsedInputValue = parseInt(event.currentTarget.value);
+
+    if(!Number.isNaN(parsedInputValue)) {
+      const newCount = Math.max(Math.min(max, parsedInputValue), min);
+      setCount(newCount);
+      if (props.onCountChange) { props.onCountChange(newCount); }
+    } else {
+      setCount(min);
+      if (props.onCountChange) { props.onCountChange(min); }
+    }
+  }, [props.onCountChange]);
+
   return (
     <div style={counterStyle}>
       <CardButton onClick={onMinusClick} style={minusButtonStyle}>
         <img src="img/minus.svg" style={iconStyle}/>
       </CardButton>
-      <div style={countStyle}>{count}{unit}</div>
+      <div style={countContainerStyle}>
+        <input
+          style={countStyle}
+          type="number"
+          min={min}
+          max={max}
+          pattern="\d*"
+          value={count.toString()}
+          onInput={onInput}
+        />
+        {unit}
+      </div>
       <CardButton onClick={onPlusClick} style={plusButtonStyle}>
         <img src="img/plus.svg" style={iconStyle}/>
       </CardButton>
