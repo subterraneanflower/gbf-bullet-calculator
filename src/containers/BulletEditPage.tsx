@@ -100,7 +100,13 @@ export const BulletEditPage = (props: BulletEditPageProps) => {
   // 保存して戻るコールバック。
   const editBulletAndBack = useCallback((event: AnimationPlaybackEvent) => {
     const newBulletCosts = [...props.bulletCosts];
-    newBulletCosts[bulletId] = new BulletCost(bullet, count);
+
+    if(count > 0) {
+      newBulletCosts[bulletId] = new BulletCost(bullet, count);
+    } else {
+      newBulletCosts.splice(bulletId, 1);
+    }
+
     props.onSave(newBulletCosts);
     props.history.goBack();
   }, [props.bulletCosts, props.onSave, count]);

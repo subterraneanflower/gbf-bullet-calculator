@@ -77,7 +77,9 @@ export const NewBulletAddPage = (props: NewBulletAddPageProps) => {
 
   // バレットを一覧に追加して戻る用のコールバック。
   const addBulletAndBack = useCallback((event: AnimationPlaybackEvent) => {
-    props.onSave([...props.bulletCosts, new BulletCost(bullet, count)]);
+    if (count > 0) {
+      props.onSave([...props.bulletCosts, new BulletCost(bullet, count)]);
+    }
     props.history.replace(props.basepath);
   }, [props.bulletCosts, props.onSave, count]);
 
