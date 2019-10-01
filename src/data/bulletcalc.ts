@@ -17,6 +17,24 @@ export interface BulletCalculatorData {
   setInstallPrompt: (prompt: any) => any;
 }
 
+// 重複バレットをまとめる。
+// e.g. アイアン*1、アイアン*1、シルバー*1 -> アイアン*2、シルバー*1
+export const combineDuplicatedInventoryBullets = (exclusionBullets: GbfItemCost[]) => {
+  const quantityArray: GbfItemCost[] = [];
+
+  for(const itemCost of exclusionBullets) {
+    const index = quantityArray.findIndex((q) => q.item === itemCost.item);
+    if(index < 0) {
+      quantityArray.push(itemCost);
+    } else {
+      const baseCost = quantityArray[index];
+      quantityArray[index] = new GbfItemCost(baseCost.item, baseCost.quantity + itemCost.quantity);
+    }
+  }
+
+  return quantityArray;
+}
+
 export const totalBulletCosts = (bulletCostList: BulletCost[], exclusionBullets: GbfItemCost[] = []): GbfItemCost[] => {
   // 素材バレットを消費しながら計算を進めていく。
   let remainingExclusionBullets = [...exclusionBullets];

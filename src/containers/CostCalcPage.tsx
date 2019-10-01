@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCallback, useContext } from 'react';
 import { BulletCalculatorContext } from '../context/bulletcalc_context';
-import { totalBulletCosts } from '../data/bulletcalc';
+import { totalBulletCosts, combineDuplicatedInventoryBullets } from '../data/bulletcalc';
 import { Card } from '../components/Card';
 import { CardButton } from '../components/CardButton';
 import { withRouter } from 'react-router';
@@ -102,7 +102,10 @@ export const CostCalcPage = withRouter(({history}) => {
   // 全ての作成バレットの素材を合計して列挙する。
   // 所持バレット分の素材は除外する。
   const totalCosts = useMemo(
-    () => totalBulletCosts(bulletCosts, bulletInventory),
+    () => {
+      const combinedBulletInventory = combineDuplicatedInventoryBullets(bulletInventory);
+      return totalBulletCosts(bulletCosts, combinedBulletInventory)
+    },
     [bulletCosts, bulletInventory]
   );
 
