@@ -45,6 +45,11 @@ const resetButtonStyle: React.CSSProperties = {
   backgroundColor: 'var(--danger-color)',
 };
 
+const requestFormLinkStyle: React.CSSProperties = {
+  color: 'white',
+  textAlign: 'center'
+};
+
 const viewSourceOnGitHubStyle: React.CSSProperties = {
   textAlign: 'center'
 };
@@ -116,6 +121,17 @@ export const PreferencesPage = () => {
         >
           全データ消去
         </CardButton>
+      </Card>
+
+      <Card style={preferencesCardStyle}>
+        <h2 style={cardTitleStyle}>ご意見BOX</h2>
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSeu-FUTzPJnYH6nK9ikSAm2rUZpZPT-whpYUtbsjI2hTpn0IQ/viewform?usp=sf_link"
+          target="_blank"
+          style={requestFormLinkStyle}
+        >
+          ご意見・バグ報告を送る
+        </a>
       </Card>
 
       <div style={viewSourceOnGitHubStyle}>
