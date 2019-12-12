@@ -561,7 +561,7 @@ const silverBullet = new Bullet(
     new GbfItemCost(lacrimosa, 5)
   ],
   {
-    cssColorString: 'rgba(131,131,131)',
+    cssColorString: 'rgb(131,131,131)',
     iconFileName: 'rifle-bullet.svg'
   }
 );
@@ -577,7 +577,7 @@ const silverBullet2 = new Bullet(
     new GbfItemCost(lacrimosa, 10)
   ],
   {
-    cssColorString: 'rgba(120,120,120)',
+    cssColorString: 'rgb(120,120,120)',
     iconFileName: 'rifle-bullet.svg'
   }
 );
