@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { BulletCalculatorContext } from '../context/bulletcalc_context';
-import { totalBulletCosts } from '../data/bulletcalc';
+import { totalBulletCosts, combineDuplicatedInventoryBullets } from '../data/bulletcalc';
 import { Card } from '../components/Card';
 import { CardButton } from '../components/CardButton';
 import { withRouter } from 'react-router';
@@ -59,11 +59,19 @@ const saveButtonStyle: React.CSSProperties = {
 };
 
 export const CostCalcItemInputPage = withRouter(({history}) => {
-  const {bulletCosts, inventory, setActionButton, setInventory} = useContext(BulletCalculatorContext);
+  const {bulletCosts, inventory, bulletInventory, setActionButton, setInventory} = useContext(BulletCalculatorContext);
   const [inputInventory, setInputInventory] = useState(inventory);
 
   // バレット作成に必要な全コスト。
-  const totalCosts = totalBulletCosts(bulletCosts);
+  // 全ての作成バレットの素材を合計して列挙する。
+  // 所持バレット分の素材は除外する。
+  const totalCosts = useMemo(
+    () => {
+      const combinedBulletInventory = combineDuplicatedInventoryBullets(bulletInventory);
+      return totalBulletCosts(bulletCosts, combinedBulletInventory)
+    },
+    [bulletCosts, bulletInventory]
+  );
 
   // 保存して戻る用のコールバック。
   const saveAndBack = useCallback((event: AnimationPlaybackEvent) => {
