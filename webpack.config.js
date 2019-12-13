@@ -23,6 +23,7 @@ module.exports = {
       { from: 'src/favicon.png', to: 'favicon.png' },
       { from: 'src/manifest.json', to: 'manifest.json' },
       { from: 'src/serviceworker.js', to: 'serviceworker.js' },
+      { from: 'src/script', to: 'script'},
       { from: 'src/img', to: 'img'}
     ]),
   ],

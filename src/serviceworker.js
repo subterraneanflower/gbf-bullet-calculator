@@ -1,4 +1,4 @@
-const CACHE_KEY = 'GbfBulletCalc-Cache-v4';
+const CACHE_KEY = 'GbfBulletCalc-Cache-v5';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
@@ -9,6 +9,7 @@ self.addEventListener('install', (event) => {
     'style.css',
     'index.js',
     'favicon.png',
+    'script/flat-polyfill.js',
     'img/aetherial-bullet.svg',
     'img/bullet.svg',
     'img/calc.svg',
