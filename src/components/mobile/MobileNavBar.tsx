@@ -42,7 +42,7 @@ export const MobileNavBar = () => {
         activeStyle={activeLinkStyle}
         style={linkStyle}
       >
-        <MobileNavButton iconUrl="img/treasure.svg" label="素材"/>
+        <MobileNavButton iconUrl="img/treasure.svg" label="素材用"/>
       </NavLink>
 
       <NavLink

@@ -6,6 +6,7 @@ import { BulletCost } from '../data/gbf';
 
 interface BulletListPageProps extends RouteComponentProps {
   title?: string;
+  description?: string;
   basepath: string;
   bulletCosts: BulletCost[]
 }
@@ -14,6 +15,13 @@ const titleStyle: React.CSSProperties = {
   color: 'rgb(60, 60, 60)',
   fontWeight: 'normal',
   fontSize: '1.3em',
+  textAlign: 'center'
+};
+
+const descriptionStyle: React.CSSProperties = {
+  color: 'rgb(90, 90, 90)',
+  fontWeight: 'normal',
+  fontSize: '1em',
   textAlign: 'center'
 };
 
@@ -36,7 +44,7 @@ const bulletButtonIconStyle: React.CSSProperties = {
 };
 
 const bulletButtonLabelStyle: React.CSSProperties = {
-  width: '13em',
+  width: '11em',
   textAlign: 'left'
 };
 
@@ -80,6 +88,7 @@ export const BulletListPage = withRouter((props: BulletListPageProps) => {
   return (
     <div className="page" >
       <h2 style={titleStyle}>{props.title}</h2>
+      {props.description ? <h3 style={descriptionStyle}>{props.description}</h3> : null}
       {bulletList}
       <CardIconButton
         iconUrl="img/plus-circle.svg"

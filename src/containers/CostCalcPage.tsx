@@ -187,7 +187,7 @@ export const CostCalcPage = withRouter(({history}) => {
       </Card>
 
       <Card style={bulletInventoryCardStyle}>
-        <h2 style={cardTitleStyle}>素材バレット</h2>
+        <h2 style={cardTitleStyle}>素材用バレット</h2>
         <div style={costListStyle}>
           {bulletInventoryList.length > 0 ?
             bulletInventoryList :

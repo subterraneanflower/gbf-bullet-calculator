@@ -208,7 +208,8 @@ export const App = () => {
                           path="/bulletinventory"
                           render={() =>
                             <BulletListPage
-                              title="素材として使うバレット"
+                              title="素材用バレット"
+                              description="素材として使用する作成済バレット"
                               basepath="/bulletinventory"
                               bulletCosts={bulletInventory}
                             />}
