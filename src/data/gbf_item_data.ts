@@ -118,6 +118,31 @@ const galbinusCentrum = new GbfItem({ja: '緑星の輝き'}, 'galbinus-centrum')
 const niveusCentrum = new GbfItem({ja: '白星の輝き'}, 'niveus-centrum');
 const aterCentrum = new GbfItem({ja: '黒星の輝き'}, 'ater-centrum');
 
+const wilnassJewel = new GbfItem({ja: 'ウィルナスの竜珠'}, 'wilnass-jewel');
+const wamdussJewel = new GbfItem({ja: 'ワムデュスの竜珠'}, 'wamduss-jewel');
+const galleonsJewel = new GbfItem({ja: 'ガレヲンの竜珠'}, 'galleons-jewel');
+const ewiyarsJewel = new GbfItem({ja: 'イーウィアの竜珠'}, 'ewiyars-jewel');
+const LuwohsJewel = new GbfItem({ja: 'ル・オーの竜珠'}, 'luwohs-jewel');
+const fedielsJewel = new GbfItem({ja: 'フェディエルの竜珠'}, 'fediels-jewel');
+
+const smolderingRubble = new GbfItem({ja: 'イグナイトラブル'}, 'smoldering-rubble');
+const abyssalTragedy = new GbfItem({ja: 'アビサル・トラジェディー'}, 'abyssal-tragedy');
+const insularCore = new GbfItem({ja: 'インシュラーコア'}, 'insular-core');
+const galeRock = new GbfItem({ja: 'ゲイルロック'}, 'gale-rock');
+const thunderboltWheel = new GbfItem({ja: '靂輪'}, 'thunderbolt-wheel');
+const todestrieb = new GbfItem({ja: 'トーデストリープ'}, 'todestrieb');
+const trueDragonsGoldenScale = new GbfItem({ja: '真龍の金鱗'}, 'true-dragons-golden-scale');
+
+const hollowKey = new GbfItem({ja: '虚ろなる鍵'}, 'hollow-key');
+const verdantAzurite = new GbfItem({ja: '蒼翠の結晶'}, 'verdant-azurite');
+
+const tearsOfTheApocalypse = new GbfItem({ja: '終末の暗晶'}, 'tears-of-the-apocalypse');
+const abyssalWing = new GbfItem({ja: '漆黒の棘翅'}, 'abyssal-wing');
+const cunningDevilsHorn = new GbfItem({ja: '狡知の魔角'}, 'cunning-devils-horn');
+const ultimateMemory = new GbfItem({ja: 'アルテマメモリ'}, 'ultimate-memory');
+
+const damascusCrystal = new GbfItem({ja: 'ダマスカス骸晶'}, 'damascus-crystal');
+const goldBrick = new GbfItem({ja: 'ヒヒイロカネ'}, 'gold-brick');
 
 
 // パラベラム弾
@@ -373,6 +398,67 @@ const healingBullet = new Bullet(
   }
 );
 
+const blazingBullet = new Bullet(
+  {ja: 'ブレイズバレット'},
+  'blazing-bullet',
+  BulletType.PARABELLUM,
+  [
+    new BulletCost(ironBullet2, 1),
+    new GbfItemCost(fireUrn, 10),
+    new GbfItemCost(rubeusCentrum, 30),
+  ],
+  {
+    cssColorString: 'rgb(229,57,53)',
+    iconFileName: 'parabellum-bullet.svg'
+  }
+);
+
+const toxicBullet = new Bullet(
+  {ja: 'トキシックバレット'},
+  'toxic-bullet',
+  BulletType.PARABELLUM,
+  [
+    new BulletCost(ironBullet2, 1),
+    new GbfItemCost(waterUrn, 10),
+    new GbfItemCost(indicusCentrum, 30),
+  ],
+  {
+    cssColorString: 'rgb(158,157,36)',
+    iconFileName: 'parabellum-bullet.svg'
+  }
+);
+
+const thunderingBullet = new Bullet(
+  {ja: 'サンダーバレット'},
+  'thundering-bullet',
+  BulletType.PARABELLUM,
+  [
+    new BulletCost(ironBullet2, 1),
+    new GbfItemCost(lightUrn, 10),
+    new GbfItemCost(niveusCentrum, 30),
+  ],
+  {
+    cssColorString: 'rgb(251,192,45)',
+    iconFileName: 'parabellum-bullet.svg'
+  }
+);
+
+const freezingBullet = new Bullet(
+  {ja: 'フリーズバレット'},
+  'freezing-bullet',
+  BulletType.PARABELLUM,
+  [
+    new BulletCost(ironBullet2, 1),
+    new GbfItemCost(waterUrn, 10),
+    new GbfItemCost(indicusCentrum, 30),
+  ],
+  {
+    cssColorString: 'rgb(91,176,245)',
+    iconFileName: 'parabellum-bullet.svg'
+  }
+);
+
+
 // ライフル弾
 const fullMetalJacket = new Bullet(
   {ja: 'フルメタルジャケット'},
@@ -625,6 +711,67 @@ const goldBullet2 = new Bullet(
   ],
   {
     cssColorString: 'rgb(155,145,42)',
+    iconFileName: 'rifle-bullet.svg'
+  }
+);
+
+const expertModelParadiseLost = new Bullet(
+  {ja: 'エンドモデル：パラダイス・ロスト'},
+  'expert-model-paradise-lost',
+  BulletType.RIFLE,
+  [
+    new BulletCost(fullMetalJacket5, 3),
+    new GbfItemCost(tearsOfTheApocalypse, 150),
+    new GbfItemCost(damascusCrystal, 10)
+  ],
+  {
+    cssColorString: 'rgb(25,118,210)',
+    iconFileName: 'rifle-bullet.svg'
+  }
+);
+
+const expertModelChaosLegion = new Bullet(
+  {ja: 'エンドモデル：ケイオス・レギオン'},
+  'expert-model-chaos-legion',
+  BulletType.RIFLE,
+  [
+    new BulletCost(fullMetalJacket5, 3),
+    new GbfItemCost(abyssalWing, 150),
+    new GbfItemCost(damascusCrystal, 10)
+  ],
+  {
+    cssColorString: 'rgb(94,53,177)',
+    iconFileName: 'rifle-bullet.svg'
+  }
+);
+
+const expertModelAnagenesis = new Bullet(
+  {ja: 'エンドモデル：アナゲンネーシス'},
+  'expert-model-anagenesis',
+  BulletType.RIFLE,
+  [
+    new BulletCost(fullMetalJacket5, 3),
+    new GbfItemCost(cunningDevilsHorn, 150),
+    new GbfItemCost(damascusCrystal, 10)
+  ],
+  {
+    cssColorString: 'rgb(184,71,66)',
+    iconFileName: 'rifle-bullet.svg'
+  }
+);
+
+const expertModelGenesisNova = new Bullet(
+  {ja: 'エンドモデル：ジェネシス・ノヴァ'},
+  'expert-model-genesis-nova',
+  BulletType.RIFLE,
+  [
+    new BulletCost(fullMetalJacket5, 3),
+    new GbfItemCost(ultimateMemory, 150),
+    new GbfItemCost(damascusCrystal, 10),
+    new GbfItemCost(goldBrick, 1)
+  ],
+  {
+    cssColorString: 'rgb(58,184,253)',
     iconFileName: 'rifle-bullet.svg'
   }
 );
@@ -1051,6 +1198,48 @@ const enhancingShell = new Bullet(
   }
 );
 
+const catastropheCylinder = new Bullet(
+  {ja: 'カタストロフィシリンダー'},
+  'catastrophe-cylinder',
+  BulletType.CARTRIDGE,
+  [
+    new BulletCost(shotshell5, 1),
+    new GbfItemCost(primevalHorn, 300)
+  ],
+  {
+    cssColorString: 'rgb(103,58,183)',
+    iconFileName: 'cartridge-bullet.svg'
+  }
+);
+
+const akashicCylinder = new Bullet(
+  {ja: 'アカシックシリンダー'},
+  'akashic-cylinder',
+  BulletType.CARTRIDGE,
+  [
+    new BulletCost(shotshell5, 1),
+    new GbfItemCost(hollowKey, 300)
+  ],
+  {
+    cssColorString: 'rgb(158,157,36)',
+    iconFileName: 'cartridge-bullet.svg'
+  }
+);
+
+const cosmosCylinder = new Bullet(
+  {ja: 'コスモスシリンダー'},
+  'cosmos-cylinder',
+  BulletType.CARTRIDGE,
+  [
+    new BulletCost(shotshell5, 1),
+    new GbfItemCost(verdantAzurite, 300)
+  ],
+  {
+    cssColorString: 'rgb(75,172,204)',
+    iconFileName: 'cartridge-bullet.svg'
+  }
+);
+
 // エーテリアル弾
 const ifritPoint = new Bullet(
   {ja: 'イフリートポイント'},
@@ -1387,6 +1576,22 @@ const agniPoint3 = new Bullet(
   }
 );
 
+const agniPoint4 = new Bullet(
+  {ja: 'アグニスポイントIV'},
+  'agni-point-4',
+  BulletType.AETHERIAL,
+  [
+    new BulletCost(agniPoint3, 1),
+    new GbfItemCost(wilnassJewel, 100),
+    new GbfItemCost(smolderingRubble, 50),
+    new GbfItemCost(trueDragonsGoldenScale, 30)
+  ],
+  {
+    cssColorString: 'rgb(178,63,47)',
+    iconFileName: 'aetherial-bullet.svg'
+  }
+);
+
 const neptunePoint = new Bullet(
   {ja: 'ネプチューンポイント'},
   'neptune-point',
@@ -1427,6 +1632,22 @@ const neptunePoint3 = new Bullet(
     new GbfItemCost(waterQuartz, 20),
     new GbfItemCost(waterUrn, 3),
     new BulletCost(neptunePoint2, 5)
+  ],
+  {
+    cssColorString: 'rgb(49,66,177)',
+    iconFileName: 'aetherial-bullet.svg'
+  }
+);
+
+const neptunePoint4 = new Bullet(
+  {ja: 'ネプチューンポイントIV'},
+  'neptune-point-4',
+  BulletType.AETHERIAL,
+  [
+    new BulletCost(neptunePoint3, 1),
+    new GbfItemCost(wamdussJewel, 100),
+    new GbfItemCost(abyssalTragedy, 50),
+    new GbfItemCost(trueDragonsGoldenScale, 30)
   ],
   {
     cssColorString: 'rgb(49,66,177)',
@@ -1481,6 +1702,22 @@ const titanPoint3 = new Bullet(
   }
 );
 
+const titanPoint4 = new Bullet(
+  {ja: 'ティターンポイントIV'},
+  'titan-point-4',
+  BulletType.AETHERIAL,
+  [
+    new BulletCost(titanPoint3, 1),
+    new GbfItemCost(galleonsJewel, 100),
+    new GbfItemCost(insularCore, 50),
+    new GbfItemCost(trueDragonsGoldenScale, 30)
+  ],
+  {
+    cssColorString: 'rgb(123,82,50)',
+    iconFileName: 'aetherial-bullet.svg'
+  }
+);
+
 const zephyrusPoint = new Bullet(
   {ja: 'ゼピュロスポイント'},
   'zephyrus-point',
@@ -1521,6 +1758,22 @@ const zephyrusPoint3 = new Bullet(
     new GbfItemCost(windQuartz, 20),
     new GbfItemCost(windUrn, 3),
     new BulletCost(zephyrusPoint2, 5)
+  ],
+  {
+    cssColorString: 'rgb(50,129,55)',
+    iconFileName: 'aetherial-bullet.svg'
+  }
+);
+
+const zephyrusPoint4 = new Bullet(
+  {ja: 'ゼピュロスポイントIV'},
+  'zephyrus-point-4',
+  BulletType.AETHERIAL,
+  [
+    new BulletCost(zephyrusPoint3, 1),
+    new GbfItemCost(ewiyarsJewel, 100),
+    new GbfItemCost(galeRock, 50),
+    new GbfItemCost(trueDragonsGoldenScale, 30)
   ],
   {
     cssColorString: 'rgb(50,129,55)',
@@ -1576,6 +1829,22 @@ const zeusPoint3 = new Bullet(
   }
 );
 
+const zeusPoint4 = new Bullet(
+  {ja: 'ゼウスポイントIV'},
+  'zeus-point-4',
+  BulletType.AETHERIAL,
+  [
+    new BulletCost(zeusPoint3, 1),
+    new GbfItemCost(LuwohsJewel, 100),
+    new GbfItemCost(thunderboltWheel, 50),
+    new GbfItemCost(trueDragonsGoldenScale, 30)
+  ],
+  {
+    cssColorString: 'rgb(149,142,30)',
+    iconFileName: 'aetherial-bullet.svg'
+  }
+);
+
 const hadesPoint = new Bullet(
   {ja: 'ハデスポイント'},
   'hades-point',
@@ -1624,6 +1893,22 @@ const hadesPoint3 = new Bullet(
   }
 );
 
+const hadesPoint4 = new Bullet(
+  {ja: 'ハデスポイントIV'},
+  'hades-point-4',
+  BulletType.AETHERIAL,
+  [
+    new BulletCost(hadesPoint3, 1),
+    new GbfItemCost(fedielsJewel, 100),
+    new GbfItemCost(todestrieb, 50),
+    new GbfItemCost(trueDragonsGoldenScale, 30)
+  ],
+  {
+    cssColorString: 'rgb(57,21,111)',
+    iconFileName: 'aetherial-bullet.svg'
+  }
+);
+
 // バレットリスト
 const parabellum: Bullet[] = [
   ironBullet,
@@ -1641,7 +1926,11 @@ const parabellum: Bullet[] = [
   shieldBullet,
   charmBullet,
   paralyzeBullet,
-  healingBullet
+  healingBullet,
+  blazingBullet,
+  toxicBullet,
+  thunderingBullet,
+  freezingBullet
 ];
 
 const rifle: Bullet[] = [
@@ -1660,7 +1949,11 @@ const rifle: Bullet[] = [
   silverBullet2,
   silverBullet3,
   goldBullet,
-  goldBullet2
+  goldBullet2,
+  expertModelParadiseLost,
+  expertModelChaosLegion,
+  expertModelAnagenesis,
+  expertModelGenesisNova
 ];
 
 const cartridge: Bullet[] = [
@@ -1690,7 +1983,10 @@ const cartridge: Bullet[] = [
   stickyShell,
   stickyShell2,
   chaiserShell,
-  enhancingShell
+  enhancingShell,
+  catastropheCylinder,
+  akashicCylinder,
+  cosmosCylinder
 ];
 
 const aetherial: Bullet[] = [
@@ -1715,21 +2011,27 @@ const aetherial: Bullet[] = [
   agniPoint,
   agniPoint2,
   agniPoint3,
+  agniPoint4,
   neptunePoint,
   neptunePoint2,
   neptunePoint3,
+  neptunePoint4,
   titanPoint,
   titanPoint2,
   titanPoint3,
+  titanPoint4,
   zephyrusPoint,
   zephyrusPoint2,
   zephyrusPoint3,
+  zephyrusPoint4,
   zeusPoint,
   zeusPoint2,
   zeusPoint3,
+  zeusPoint4,
   hadesPoint,
   hadesPoint2,
-  hadesPoint3
+  hadesPoint3,
+  hadesPoint4
 ];
 
 export const bullet: {[k: string]: Bullet[]} = {
